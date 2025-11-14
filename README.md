@@ -25,11 +25,62 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 5. Security: The security of the MAC relies on the secret key \( K \) and the strength of the hash function \( H \), ensuring that an attacker cannot forge a valid MAC without knowledge of the key.
 
 ## Program:
-
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void encrypt(char message[], int shift);
+void decrypt(char message[], int shift);
+int main() 
+{
+    char message[100];
+    int shift;
+    printf("********** MAC [ Message Authentication Code ] **********\n\n");
+    printf("Enter a message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    printf("Enter the shift value: ");
+    scanf("%d", &shift);
+    encrypt(message, shift);
+    printf("\nEncrypted message: %s\n", message);
+    decrypt(message, shift);
+    printf("Decrypted message: %s\n", message);
+    return 0;
+}
+void encrypt(char message[], int shift) 
+{
+    for (int i = 0; message[i] != '\0'; ++i) 
+    {
+        char ch = message[i];
+        if (islower(ch)) 
+        {
+            message[i] = ((ch - 'a' + shift) % 26) + 'a';
+        }
+        else if (isupper(ch))
+        {
+            message[i] = ((ch - 'A' + shift) % 26) + 'A';
+        }
+    }
+}
+void decrypt(char message[], int shift)
+{
+    for (int i = 0; message[i] != '\0'; ++i) 
+    {
+        char ch = message[i];
+        if (islower(ch)) 
+        {
+            message[i] = ((ch - 'a' - shift + 26) % 26) + 'a';
+        }
+        else if (isupper(ch)) 
+        {
+            message[i] = ((ch - 'A' - shift + 26) % 26) + 'A';
+        }
+    }
+}
+```
 
 
 ## Output:
-
+<img width="1693" height="691" alt="Screenshot 2025-11-14 093255" src="https://github.com/user-attachments/assets/ccd4cfb9-6dd6-47ec-a29f-34a9798dd289" />
 
 ## Result:
 The program is executed successfully.
